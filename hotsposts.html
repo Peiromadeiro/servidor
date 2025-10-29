@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Imagen Interactiva Hotspots</title>
+  <style>
+    html, body { margin: 0; padding: 0; width: 100%; background: #fff;}
+    body { box-sizing: border-box; }
+    .hotspot-wrapper {
+      width: 100%;
+      max-width: 650px; /* o el ancho máximo real de la imagen si lo sabes */
+      margin: 0 auto;
+      position: relative;
+    }
+    /* Proporción 650x420 = (420/650)x100=64.6% */
+    .hotspot-container {
+      position: relative;
+      width: 100%;
+      /* padding-top según aspecto de la imagen, aquí 650x420 píxeles = 64.6% */
+      padding-top: 64.6%;
+    }
+    .hotspot-container img.product-image {
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hotspot, .hotspot-info {
+      position: absolute;
+    }
+    .hotspot {
+      width: 6%; height: 6%;
+      min-width: 28px; min-height: 28px;
+      max-width: 42px; max-height: 42px;
+      background: #ffc400;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7vw;
+      color: #fff;
+      z-index: 2;
+      transition: background 0.2s;
+      box-sizing: border-box;
+    }
+    .hotspot:hover, .hotspot.active { background: #eb5900; }
+    .hotspot-info {
+      display: none;
+      top: 110%; left: -10px;
+      background: #fff;
+      border-radius: 9px;
+      padding: 16px;
+      min-width: 180px; max-width: 320px;
+      box-shadow: 0 2px 18px rgba(0,0,0,0.10);
+      z-index: 10;
+    }
+    .hotspot.active + .hotspot-info { display: block; }
+    @media (max-width: 600px) {
+      .hotspot-info { font-size: 13px; min-width: 120px; padding: 8px;}
+      .hotspot { font-size: 16px; }
+      .hotspot-wrapper { max-width: 100vw; }
+    }
+  </style>
+</head>
+<body>
+<div class="hotspot-wrapper">
+  <div class="hotspot-container" id="hotspot-container">
+    <img src="https://www.lavanguardia.com/files/content_image_desktop_filter/uploads/2025/10/28/69008b2cc066c.jpeg" alt="Auriculares" class="product-image">
+    <!-- Hotspot 1: (ejemplo, 43% izq, 13% arriba) -->
+    <div class="hotspot" style="left:43%; top:13%;">+</div>
+    <div class="hotspot-info">
+      <strong>Diadema</strong>
+      <p>Diseñada para ser ligera y cómoda. Es ajustable y utiliza materiales de alta calidad para garantizar una sujeción segura y cómoda durante un uso prolongado</p>
+    </div>
+    <!-- Hotspot 2: (ejemplo, 49% izq, 41% arriba) -->
+    <div class="hotspot" style="left:49%; top:41%;">+</div>
+    <div class="hotspot-info">
+      <strong>Sonido</strong>
+      <p>Altavoces de 40 mm con diafragma de polímero de cristal líquido ofrecen un audio equilibrado y lleno de matices, con graves potentes y agudos limpios</p>
+    </div>
+  </div>
+</div>
+<script>
+  // Hotspot click logic
+  document.querySelectorAll('.hotspot').forEach(function(hotspot) {
+    hotspot.addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.querySelectorAll('.hotspot').forEach(hs => hs.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.classList.contains('hotspot') && !e.target.classList.contains('hotspot-info')) {
+      document.querySelectorAll('.hotspot').forEach(hs => hs.classList.remove('active'));
+    }
+  });
+</script>
+</body>
+</html>
